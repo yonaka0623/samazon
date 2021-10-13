@@ -1,4 +1,6 @@
 class ProductsController < ApplicationController
+  before_action :set_product, only: [:show, :edit, :update, :destroy, :favorite]
+  
   def index
     @products = Product.all
   end
@@ -31,6 +33,11 @@ class ProductsController < ApplicationController
   def destroy
     @product.destroy
     redirect_to products_url
+  end
+  
+  def favorite
+   current_user.toggle_like!(@product)
+   redirect_to product_url @product
   end
 
   private
