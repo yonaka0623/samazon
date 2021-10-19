@@ -3,8 +3,7 @@ class Product < ApplicationRecord
   has_many :reviews
   acts_as_lileable
   
-  PER = 15
-  
+  extend DisplayList
  scope :display_list, -> (page) { page(page).per(PER) }
  scope :on_category, -> (category) { where(category_id: category) }
   scope :sort_order, -> (order) { order(order) }
@@ -18,6 +17,11 @@ class Product < ApplicationRecord
     on_category(sort_order[:sort_category]).
     sort_order(sort_order[:sort]).
     display_list(page)
+  }
+  
+  scope :search_for_id_and_name, -> (keyword) {
+    where("name LIKE ?", "%#{keyword}%").
+    or(where("id LIKE ?", "%#{keyword}%"))
   }
  
   scope :sort_list, -> {
