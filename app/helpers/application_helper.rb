@@ -1,5 +1,5 @@
 module ApplicationHelper
-  def resource_id_user?
-    require.fullpath == "/login"
+  def resource_is_user?
+    request.fullpath == "/login"
   end
 end

@@ -1,3 +1,4 @@
+#kakunin
 class Dashboard::MajorCategoriesController < ApplicationController
   before_action :authenticate_admin!
   before_action :set_major_category, only: %w[show edit update destroy]

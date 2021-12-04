@@ -1,3 +1,4 @@
+#kakunin
 class Dashboard::CategoriesController < ApplicationController
   before_action :authenticate_admin!, except: :index
   before_action :set_category, only: %w[show edit update destroy]
@@ -8,14 +9,14 @@ class Dashboard::CategoriesController < ApplicationController
     @category = Category.new
     @major_categories = MajorCategory.all
   end
-
+  
   def show
   end
 
   def create
     category = Category.new(category_params)
     category.save
-    redirect_to dashboard_categories_path
+    redirect_to dashboard_categories_url
   end
 
   def edit
@@ -25,12 +26,12 @@ class Dashboard::CategoriesController < ApplicationController
   def update
     @category.update(category_params)
     @category.save
-    redirect_to dashboard_categories_path
+    redirect_to dashboard_categories_url
   end
 
   def destroy
     @category.destroy
-    redirect_to dashboard_categories_path
+    redirect_to dashboard_categories_url
   end
 
   private

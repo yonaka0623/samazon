@@ -1,3 +1,4 @@
+#kakunin
 module ReviewsHelper
   def score_on_star(score)
     return "★★★★★" if score == 5

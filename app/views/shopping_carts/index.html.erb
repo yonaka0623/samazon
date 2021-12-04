@@ -1,3 +1,4 @@
+<!---->
 <div class="container d-flex justify-content-center mt-3">
   <div class="w-75">
     <h1>ショッピングカート</h1>
@@ -20,7 +21,11 @@
         <% product = Product.find(user_cart_item.item_id) %>
         <div class="col-md-2 mt-2">
           <%= link_to product_path(product) do %>
+          <% if product.image.attached? %>
+              <%= image_tag product.image, class: "img-fuild w-100" %>
+            <% else %>
               <%= image_tag "/images/dummy.png", class: "img-fuild w-100" %>
+            <% end %>
           <% end %>
         </div>
         <div class="col-md-6 mt-4">
@@ -34,10 +39,26 @@
         </div>
       <% end %>
     </div>
-
+    
     <hr>
 
     <div class="offset-8 col-4">
+      <div class="row">
+        <div class="col-6">
+          <h2>小計</h2>
+        </div>
+        <div class="col-6">
+          <h2>￥<%= (@user_cart.total - @user_cart.shipping_cost).fractional / 100 %></h2>
+        </div>
+      </div>      
+      <div class="row">
+        <div class="col-6">
+          <h2>送料</h2>
+        </div>
+        <div class="col-6">
+          <h2>￥<%= @user_cart.shipping_cost.fractional / 100 %></h2>
+        </div>
+       </div>
       <div class="row">
         <div class="col-6">
           <h2>合計</h2>

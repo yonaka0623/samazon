@@ -1,3 +1,4 @@
+#kakunin
 class ProductsController < ApplicationController
   before_action :set_product, only: [:show, :edit, :update, :destroy, :favorite]
 
@@ -29,8 +30,8 @@ class ProductsController < ApplicationController
   end
 
   def favorite
-    current_user.toggle_like!(product)
-    redirect_to product_url product
+    current_user.toggle_like!(@product)
+    redirect_to product_url @product
   end
 
   private

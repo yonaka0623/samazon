@@ -4,6 +4,7 @@ class CreateCategories < ActiveRecord::Migration[5.2]
       t.string :major_category_name
       t.string :name
       t.text :description
+      
       t.timestamps
     end
   end

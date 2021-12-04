@@ -63,14 +63,14 @@ Rails.application.configure do
   # default url
   config.action_mailer.default_url_options = {
     protocol: 'https',
-    host: ENV["CLOUP9_APP_ROOT_URL"]
+    host: ENV["CLOUD9_APP_ROOT_URL"]
   }
   
   #mail setting
 
 config.action_mailer.raise_delivery_errors = true
 config.action_mailer.delivery_method = :smtp
-config.action_mailer.smtp_setting = {
+config.action_mailer.smtp_settings = {
   :address => "smtp.gmail.com",
   :port => 587,
   :user_name => ENV["GMAIL_ADDRESS"],

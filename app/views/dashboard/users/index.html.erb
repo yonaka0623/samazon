@@ -1,18 +1,19 @@
+<!---->
 <div class="w-75">
 
   <h1>顧客一覧</h1>
-  
+
   <div class="w-75">
-     <%= form_with url: dashboard_users_path, method: :get, local: true do |f| %>
-       <div class="d-flex flex-inline form-group">
+    <%= form_with model:@users, url: dashboard_users_path, method: :get do |f| %>
+      <div class="d-flex flex-inline form-group">
         <div class="d-flex align-items-center">
-            ID・氏名など
-         </div>
-         <%= f.text_area :keyword, value: @keyword, class: "form-controll ml-2 w-50" %>
-       </div>
-       <%= f.submit "検索", class: "btn samazon-submit-button" %>
-     <% end %>
-   </div>
+          ID・氏名など
+        </div>
+        <%= f.text_area :keyword, class: "form-controll ml-2 w-50" %>
+      </div>
+      <%= f.submit "検索", class: "btn samazon-submit-button" %>
+    <% end %>
+  </div>
 
   <table class="table mt-5">
     <thead>
@@ -31,10 +32,19 @@
         <td><%= user.name %></td>
         <td><%= user.email %></td>
         <td><%= user.phone %></td>
+        <td>
+          <%= form_with model: user, url: dashboard_user_path(user), local: true, method: :delete do |f| %>
+            <% if user.deleted_flg %>
+              <%= f.submit "復帰", class: "btn dashboard-delete-link" %>
+            <% else %>
+              <%= f.submit "削除", class: "btn dashboard-delete-link" %>
+            <% end %>
+          <% end %>
+        </td>
       </tr>
       <% end %>
     </tbody>
   </table>
 
-  <%= paginate @users%>
+  <%= paginate @users %>
 </div>

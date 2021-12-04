@@ -1,3 +1,4 @@
+#確認
 class ShoppingCartsController < ApplicationController
   before_action :set_cart, only: %i[index create destroy]
   
@@ -5,10 +6,14 @@ class ShoppingCartsController < ApplicationController
     @user_cart_items = ShoppingCartItem.user_cart_items(@user_cart)
   end
   
+  def show
+    @cart = ShoppingCart.find(user_id: current_user)
+  end
+  
   def create
-   @product = Product.find(product_params[:product_id])
-   @user_cart.add(@product, product_params[:price].to_i, product_params[:quantity].to_i)
-   redirect_to cart_users_path
+    @product = Product.find(product_params[:product_id])
+    @user_cart.add(@product, product_params[:price].to_i, product_params[:quantity].to_i)
+    redirect_to cart_users_path
   end
   
   def update
@@ -17,11 +22,15 @@ class ShoppingCartsController < ApplicationController
   def destroy
    @user_cart.buy_flag = true
    @user_cart.save
-   redirect_to cart_users_url
-  end
-  
-  def show
-   @cart = ShoppingCart.find(user_id: current_user)
+   
+     Payjp.api_key = ENV["PAYJP_SECRET_KEY"]
+     Payjp::Charge.create( 
+                           :customer => current_user.token,
+                           :amount => @user_cart.total.to_i,
+                           :currency => 'jpy'
+                         )
+   
+    redirect_to cart_users_url
   end
   
   private
@@ -30,7 +39,7 @@ class ShoppingCartsController < ApplicationController
   end
   
   
-   def set_cart
+  def set_cart
      @user_cart = ShoppingCart.set_user_cart(current_user)
-   end
+  end
 end

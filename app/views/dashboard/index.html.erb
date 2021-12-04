@@ -1,51 +1,40 @@
+<!---->
 <div class="w-75">
-
-  <%= form_with(model: @category, url: dashboard_categories_path, local: true) do |f| %>
-    <div class="form-group">
-      <%= f.label :name, "カテゴリ名" %>
-      <%= f.text_field :name, class: "form-control" %>
-    </div>
-
-    <div class="form-group">
-      <%= f.label :description, "カテゴリの説明" %>
-      <%= f.text_field :description, class: "form-control" %>
-    </div>
-
-    <div class="form-group">
-      <%= f.label :major_category_id, "親カテゴリ" %>
-      <%= f.select :major_category_id, @major_categories.map { |mc| [mc.name, mc.id] }, {}, class: "form-control" %>
-        </div>
-
-    <div class="form-group">
-      <%= f.submit "＋新規作成", class: "btn samazon-submit-button" %>
-    </div>
+  <% if @sort == "month" %>
+    <h1>月別売上</h1>
+  <% else %>
+    <h1>日別売上</h1>
   <% end %>
-
-  <table class="table mt-5">
-    <thead>
-      <tr>
-        <th scope="col" class="w-25">ID</th>
-        <th scope="col">カテゴリ</th>
-        <th scope="col"></th>
-        <th scope="col"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <% if @categories.present? %>
-        <% @categories.each do |category| %>
+  <%= form_with url: dashboard_path, method: :get, local: true, class: "form-inline" do |f| %>
+    切り替え
+    <% if @sort.present? %>
+      <%= f.select :sort, @sort_list, { selected: @sort}, { onChange: "javascript: this.form.submit();", class: "form-inline ml-2" } %>
+    <% else %>
+      <%= f.select :sort, @sort_list, {}, { onChange: "javascript: this.form.submit();", class: "form-inline ml-2" } %>
+    <% end %>
+  <% end %>
+  <div class="container mt-4">
+    <table class="table">
+      <thead>
         <tr>
-          <th scope="row"><%= category.id %></td>
-          <td><%= category.name %></td>
-          <td>
-            <%= link_to "編集", edit_dashboard_category_path(category), class: "dashboard-edit-link" %>
-          </td>
-          <td>
-            <%= link_to "削除", dashboard_category_path(category), method: :delete, class: "dashboard-delete-link" %>
-          </td>          
+          <th scope="col">年月日</th>
+          <th scope="col">金額</th>
+          <th scope="col">件数</th>
+          <th scope="col">平均単価</th>
         </tr>
+      </thead>
+      <tbody>
+        <% @sales.each do |sale| %>
+          <tr>
+            <td><%= sale[:period] %></td>
+            <td><%= sale[:total] %></td>
+            <td><%= sale[:count] %></td>
+            <td><%= sale[:average] %></td>
+          </tr>
         <% end %>
-      <% end %>
-    </tbody>
-  </table>
-  <%= paginate @categories %>
+      </tbody>
+    </table>
+    
+    <%= paginate @sales %>
+  </div>
 </div>
